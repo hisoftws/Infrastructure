@@ -139,7 +139,6 @@ namespace Infrastructure.SerialPort
             }
             //无意义，只是因为父类的 Sp_DataReceived() 不是 public
             public void WatchSerialPort() => Sp_DataReceived(new object(), new SerialDataReceivedEventArgs(SerialData.Eof));
-
         }
 
         public enum DataType
