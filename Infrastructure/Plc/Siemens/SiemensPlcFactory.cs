@@ -10,12 +10,12 @@ namespace Infrastructure.Plc.Siemens
 {
     public class SiemensPlcFactory
     {
-        private readonly SiemensPlcOptions _optionsMonitor;
-        private static object _obj = new object();
         private ILogger<SiemensPlcFactory> _logger;
         private SiemensPlcFactory _siemenns;
         private SiemensS7Net S7PLC = null;
         private bool PLCstatus = false;
+        private readonly SiemensPlcOptions _optionsMonitor;
+        private static object _obj = new object();
 
         public SiemensPlcFactory(ILogger<SiemensPlcFactory> logger, IOptionsMonitor<SiemensPlcOptions> optionsMonitor)
         {
