@@ -161,6 +161,8 @@ namespace Infrastructure.Modbus
                 master.Transport.WriteTimeout = _optionsMonitor.WriteTimeout;
                 master.Transport.Retries = _optionsMonitor.Retries;
                 master.Transport.WaitToRetryMilliseconds = _optionsMonitor.WaitToRetryMilliseconds;
+                _serialPort.Close();
+                _serialPort.Open();
                 if (_serialPort.IsOpen)
                 {
                     if (_logger != null)
