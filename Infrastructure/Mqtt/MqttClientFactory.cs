@@ -21,6 +21,7 @@ namespace Infrastructure.Mqtt
         private MqttClient _mqttClient;
         public List<string> publishTopics { get; set; }
         public List<string> subscriberTopics { get; set; }
+        
 
         public MqttClientFactory(ILogger<MqttClientFactory> logger, IOptionsMonitor<MqttOptions> optionsMonitor)
         {
@@ -38,12 +39,12 @@ namespace Infrastructure.Mqtt
                 {
                     if (_mqttClient == null)
                     {
-
                         MqttConnect();
                     }
                 }
             }
         }
+
         /// <summary>
         /// 连接Mqtt
         /// </summary>
