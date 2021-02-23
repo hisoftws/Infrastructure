@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="Memory\" />
-    <Folder Include="Image\" />
   </ItemGroup>
 
 </Project>
