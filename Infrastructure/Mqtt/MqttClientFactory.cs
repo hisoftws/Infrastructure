@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,7 +22,50 @@ namespace Infrastructure.Mqtt
         private MqttClient _mqttClient;
         public List<string> publishTopics { get; set; }
         public List<string> subscriberTopics { get; set; }
-        
+        public static event EventHandler OnCMD;
+
+        public MqttClientFactory(IOptionsMonitor<MqttOptions> optionsMonitor)
+        {
+            if (optionsMonitor == null)
+            {
+                throw new ArgumentNullException(nameof(optionsMonitor));
+            }
+
+            _optionsMonitor = optionsMonitor.CurrentValue;
+
+            if (_mqttClient == null)
+            {
+                lock (_obj)
+                {
+                    if (_mqttClient == null)
+                    {
+                        MqttConnect();
+                    }
+                }
+            }
+        }
+
+        public MqttClientFactory(MqttOptions optionsMonitor)
+        {
+            if (optionsMonitor == null)
+            {
+                throw new ArgumentNullException(nameof(optionsMonitor));
+            }
+
+            _optionsMonitor = optionsMonitor;
+
+            if (_mqttClient == null)
+            {
+                lock (_obj)
+                {
+                    if (_mqttClient == null)
+                    {
+                        MqttConnect();
+                    }
+                }
+            }
+        }
+
 
         public MqttClientFactory(ILogger<MqttClientFactory> logger, IOptionsMonitor<MqttOptions> optionsMonitor)
         {
@@ -67,11 +111,12 @@ namespace Infrastructure.Mqtt
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Mqtt Link Error : MQTTServerip:{_optionsMonitor.ServerIp}:{_optionsMonitor.ServerPort},account:{_optionsMonitor.Account},password:{_optionsMonitor.Password}");
+                if (_logger != null)
+                    _logger.LogError($"Mqtt Link Error : MQTTServerip:{_optionsMonitor.ServerIp}:{_optionsMonitor.ServerPort},account:{_optionsMonitor.Account},password:{_optionsMonitor.Password}");
             }
         }
 
-       
+
 
         private void _mqttClient_ConnectionClosed(object sender, EventArgs e)
         {
@@ -87,6 +132,9 @@ namespace Infrastructure.Mqtt
         private void _mqttClient_MqttMsgPublishReceived(object sender, M2Mqtt.Messages.MqttMsgPublishEventArgs e)
         {
             //throw new NotImplementedException();
+            Debug.WriteLine($"receive data:{Encoding.UTF8.GetString(e.Message)}");
+            if (OnCMD != null)
+                OnCMD(Encoding.UTF8.GetString(e.Message),null);
         }
 
         /// <summary>
@@ -102,7 +150,7 @@ namespace Infrastructure.Mqtt
                 return;
             }
             _mqttClient.Publish(mqtttopic, Encoding.UTF8.GetBytes(data), MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE, false);
-           // _logger.LogInformation($"Mqtt Send : {data}");
+            // _logger.LogInformation($"Mqtt Send : {data}");
         }
 
 
