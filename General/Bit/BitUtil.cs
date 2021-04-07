@@ -19,7 +19,7 @@ namespace General.Bit
             return BitArray2Int(ba);
         }
 
-        public static bool[] GetBitValue(int source, int readType = -1, int index)
+        public static bool[] GetBitValue(int source, int index, int readType = -1)
         {
             var ba = new BitArray(new int[source]);
             switch (readType)
