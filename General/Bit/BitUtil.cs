@@ -10,18 +10,33 @@ namespace General.Bit
         public static int BitWiter(bool[] bools)
         {
             var ba = new BitArray(bools.Length);
+            for (int i = 0; i < bools.Length; i++)
+            {
+                ba.Set(i, bools[i]);
+            }
             return BitArray2Int(ba);
         }
 
         public static int BitWiter(int[] ints)
         {
             var ba = new BitArray(ints.Length);
+            for (int i = 0; i < ints.Length; i++)
+            {
+                ba.Set(i, Convert.ToBoolean(ints[i]));
+            }
             return BitArray2Int(ba);
         }
 
+        /// <summary>
+        /// 获取整数各位的值
+        /// </summary>
+        /// <param name="source">输入的源整数</param>
+        /// <param name="index">位的下标</param>
+        /// <param name="readType">eg: -1 读取所有，0 读取指定下标的位状态</param>
+        /// <returns></returns>
         public static bool[] GetBitValue(int source, int index, int readType = -1)
         {
-            var ba = new BitArray(new int[source]);
+            var ba = new BitArray(new int[] { source });
             switch (readType)
             {
                 case -1:
