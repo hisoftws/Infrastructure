@@ -18,8 +18,9 @@ namespace Infrastructure.Mqtt
     {
         private readonly MqttOptions _optionsMonitor;
         private static object _obj = new object();
+        private Thread ReconnectThread = null;
         private ILogger<MqttClientFactory> _logger;
-        private MqttClient _mqttClient;
+        public MqttClient _mqttClient;
         public List<string> publishTopics { get; set; }
         public List<string> subscriberTopics { get; set; }
         public static event EventHandler OnCMD;
@@ -113,9 +114,9 @@ namespace Infrastructure.Mqtt
             {
                 if (_logger != null)
                     _logger.LogError($"Mqtt Link Error : MQTTServerip:{_optionsMonitor.ServerIp}:{_optionsMonitor.ServerPort},account:{_optionsMonitor.Account},password:{_optionsMonitor.Password}");
+
             }
         }
-
 
 
         private void _mqttClient_ConnectionClosed(object sender, EventArgs e)
@@ -134,7 +135,7 @@ namespace Infrastructure.Mqtt
             //throw new NotImplementedException();
             Debug.WriteLine($"receive data:{Encoding.UTF8.GetString(e.Message)}");
             if (OnCMD != null)
-                OnCMD(Encoding.UTF8.GetString(e.Message),null);
+                OnCMD(Encoding.UTF8.GetString(e.Message), null);
         }
 
         /// <summary>
@@ -160,6 +161,41 @@ namespace Infrastructure.Mqtt
         public void MqttClose()
         {
             _mqttClient.Disconnect();
+        }
+
+        /// <summary>
+        /// Mqtt 重连
+        /// </summary>
+        /// <param name="state">eg: 1 开启重连，0 关闭重连</param>
+        public void MqttReconnect(int state)
+        {
+            switch (state)
+            {
+                case 1:
+                    ReconnectThread = new Thread(() =>
+                    {
+                        while (true)
+                        {
+                            if (_mqttClient == null || !_mqttClient.IsConnected)
+                            {
+                                MqttConnect();
+                                Thread.Sleep(5 * 1000);
+                            }
+                        }
+                    });
+                    ReconnectThread.Name = _mqttClient.ClientId;
+                    ReconnectThread.Start();
+                    break;
+                case 0:
+                    if (ReconnectThread != null && ReconnectThread.IsAlive)
+                    {
+                        ReconnectThread.Abort();
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }
