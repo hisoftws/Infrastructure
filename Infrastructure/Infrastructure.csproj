@@ -28,8 +28,10 @@
     <PackageReference Include="M2MqttClientDotnetCore" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="MQTTnet" Version="3.0.15" />
     <PackageReference Include="NModbus4.Core" Version="1.0.2" />
     <PackageReference Include="OpcUaHelper" Version="1.0.2" />
+    <PackageReference Include="SuperSocket.ClientEngine.Core" Version="0.10.0" />
     <PackageReference Include="System.Device.Gpio" Version="1.1.0" />
     <PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
     <PackageReference Include="System.IO.Ports" Version="5.0.0" />

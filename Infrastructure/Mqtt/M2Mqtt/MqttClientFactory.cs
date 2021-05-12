@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Infrastructure.Mqtt
+namespace Infrastructure.Mqtt.M2Mqtt
 {
     /// <summary>
     /// CoApServer
@@ -20,7 +20,7 @@ namespace Infrastructure.Mqtt
         private static object _obj = new object();
         private Thread ReconnectThread = null;
         private ILogger<MqttClientFactory> _logger;
-        public MqttClient _mqttClient;
+        public  MqttClient _mqttClient;
         public List<string> publishTopics { get; set; }
         public List<string> subscriberTopics { get; set; }
         public static event EventHandler OnCMD;
@@ -125,12 +125,12 @@ namespace Infrastructure.Mqtt
             MqttConnect();
         }
 
-        private void _mqttClient_MqttMsgSubscribed(object sender, M2Mqtt.Messages.MqttMsgSubscribedEventArgs e)
+        private void _mqttClient_MqttMsgSubscribed(object sender, MqttMsgSubscribedEventArgs e)
         {
             //throw new NotImplementedException();
         }
 
-        private void _mqttClient_MqttMsgPublishReceived(object sender, M2Mqtt.Messages.MqttMsgPublishEventArgs e)
+        private void _mqttClient_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             //throw new NotImplementedException();
             Debug.WriteLine($"receive data:{Encoding.UTF8.GetString(e.Message)}");

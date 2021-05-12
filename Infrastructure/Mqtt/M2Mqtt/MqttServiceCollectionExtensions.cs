@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Mqtt
+namespace Infrastructure.Mqtt.M2Mqtt
 {
-    public static class OpcUaClientCollectionExtensions
+    public static class MqttServiceCollectionExtensions
     {
         public static IServiceCollection AddMqttClient(this IServiceCollection services, Action<MqttOptions> setupAction)
         {

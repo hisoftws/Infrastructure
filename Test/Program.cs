@@ -1,6 +1,9 @@
 ﻿using System;
 using General.Validate.CRC;
 using General.Bit;
+using Infrastructure.Mqtt.MqttNet;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace Test
 {
@@ -8,6 +11,26 @@ namespace Test
     {
         static void Main(string[] args)
         {
+
+            var options = new MqttOptions { 
+                Account = "admin", 
+                Password = "password", 
+                ServerIp = "127.0.0.1", 
+                ServerPort = 1883, 
+                QualityOfServiceLevel = 0 , 
+                SubscribeTopic= new List<string> { "test", "test1"} 
+            };
+
+            var factory = new MqttClientFactory(options);
+            factory.MqttConnect();
+
+            while (true)
+            {
+                factory.Publish("test", new Random().Next(0, 999).ToString());
+                factory.Publish("test1", new Random().Next(0, 999).ToString());
+                Thread.Sleep(1000);
+            }
+
             var Hexresult = new byte[] { 0xff, 0xa0 }.ToModbusCRC16(true);//General.Validate.CRC.CRC16.ToModbusCRC16(, true);
             var result2 = new byte[] { 0xff, 0xa0 }.ToCRC16(true);//General.Validate.CRC.CRC16.crc16(,2);
             var rec = new byte[] { 0xff, 0xa0 }.crc16();
