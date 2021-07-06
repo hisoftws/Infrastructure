@@ -81,7 +81,7 @@ namespace Infrastructure.SerialPort.Microsoft
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError($"串口初始化出现异常,异常内容:{ex.StackTrace}");
             }
         }
 
