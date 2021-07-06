@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.SerialPort
+namespace Infrastructure.SerialPort.Flyfire
 {
     /// <summary>
     /// 

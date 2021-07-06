@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using flyfire.IO.Ports;
 using RJCP.IO.Ports;
 
-namespace Infrastructure.SerialPort
+namespace Infrastructure.SerialPort.Flyfire
 {
     /// <summary>
     /// SerialPortFactory

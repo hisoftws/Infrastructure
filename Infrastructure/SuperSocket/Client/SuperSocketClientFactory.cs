@@ -3,46 +3,38 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading;
 
 namespace Infrastructure.SuperSocket.Client
 {
-    public class SSClient
+    public class SuperSocketClientFactory
     {
-        private AsyncTcpSession client = null;
-        private string _ip = string.Empty;
-        private int _port = 0;
+        public AsyncTcpSession client = null;
+        public string _ip = string.Empty;
+        public int _port = 0;
         public Action<string, byte[]> OnReport;
+        public static List<SuperSocketClientOptions> ops;
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ip">服务器IP</param>
         /// <param name="port">服务器端口</param>
-        public SSClient(string ip, int port)
+        public SuperSocketClientFactory(string ip, int port)
         {
             _ip = ip;
-            _port = port;
-            client = new AsyncTcpSession();
-            // 连接断开事件
-            client.Closed += client_Closed;
-            // 收到服务器数据事件
-            client.DataReceived += client_DataReceived;
-            // 连接到服务器事件
-            client.Connected += client_Connected;
-            // 发生错误的处理
-            client.Error += client_Error;
+            _port = port; 
         }
         void client_Error(object sender, ErrorEventArgs e)
         {
-           
             Console.WriteLine(e.Exception.Message);
             Connect();
         }
 
         void client_Connected(object sender, EventArgs e)
         {
-            Console.WriteLine($"{_ip}连接成功");
-           
+            Console.WriteLine($"{_ip}连接成功"); 
         }
 
         void client_DataReceived(object sender, DataEventArgs e)
@@ -62,7 +54,18 @@ namespace Infrastructure.SuperSocket.Client
         /// </summary>
         public void Connect()
         {
+            client = null;
+            client = new AsyncTcpSession();
+            // 连接断开事件
+            client.Closed += client_Closed;
+            // 收到服务器数据事件
+            client.DataReceived += client_DataReceived;
+            // 连接到服务器事件
+            client.Connected += client_Connected;
+            // 发生错误的处理
+            client.Error += client_Error;
             client.Connect(new IPEndPoint(IPAddress.Parse(_ip), _port));
+            Console.WriteLine($"{_ip}重连开始...");
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace Infrastructure.SuperSocket.Client
             }
             else
             {
-                client.Connect(new IPEndPoint(IPAddress.Parse(_ip), _port));
+                Connect();
             }
         }
 
@@ -96,8 +99,28 @@ namespace Infrastructure.SuperSocket.Client
             }
             else
             {
+                Console.WriteLine($"{_ip}发送数据时socket连接断开,重连开始...");
                 Connect();
             }
+        }
+
+        public void ReConnect() {
+
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(5000);
+                    if (client != null)
+                    {
+                        if (!client.IsConnected)
+                        {
+                            Console.WriteLine($"{_ip}IsConnected:{client.IsConnected},重连开始...");
+                            client.Connect(new IPEndPoint(IPAddress.Parse(_ip), _port));
+                        }
+                    }
+                }
+            }).Start();
         }
     }
 }
