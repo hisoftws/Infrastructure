@@ -8,6 +8,7 @@ using MQTTnet.Client.Options;
 using MQTTnet.Client.Receiving;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -121,7 +122,7 @@ namespace Infrastructure.Mqtt.MqttNet
                 }
                 catch (Exception exp)
                 {
-                    Console.WriteLine("Disconnected >>Exception " + exp.Message);
+                    Debug.WriteLine("Disconnected >>Exception " + exp.Message);
                 }
             }
             catch (Exception exp)
@@ -142,8 +143,8 @@ namespace Infrastructure.Mqtt.MqttNet
                 string Topic = e.ApplicationMessage.Topic;
                 string QoS = e.ApplicationMessage.QualityOfServiceLevel.ToString();
                 string Retained = e.ApplicationMessage.Retain.ToString();
-                Console.WriteLine("MessageReceived >>Topic:" + Topic + "; QoS: " + QoS + "; Retained: " + Retained + ";");
-                Console.WriteLine("MessageReceived >>Msg: " + text);
+                Debug.WriteLine("MessageReceived >>Topic:" + Topic + "; QoS: " + QoS + "; Retained: " + Retained + ";");
+                Debug.WriteLine("MessageReceived >>Msg: " + text);
             }
             catch (Exception exp)
             {
@@ -171,11 +172,11 @@ namespace Infrastructure.Mqtt.MqttNet
                     _mqttClient.ConnectAsync(options);
                 if (_mqttClient.IsConnected == false)
                 {
-                    Console.WriteLine("Publish >>Connected Failed! ");
+                    Debug.WriteLine("Publish >>Connected Failed! ");
                     return;
                 }
-                Console.WriteLine("Publish >>Topic: " + Topic + "; QoS: " + _optionsMonitor.QualityOfServiceLevel + "; Retained: " + _optionsMonitor.Retained + ";");
-                Console.WriteLine("Publish >>Message: " + Message);
+                Debug.WriteLine("Publish >>Topic: " + Topic + "; QoS: " + _optionsMonitor.QualityOfServiceLevel + "; Retained: " + _optionsMonitor.Retained + ";");
+                Debug.WriteLine("Publish >>Message: " + Message);
                 MqttApplicationMessageBuilder mamb = new MqttApplicationMessageBuilder()
                     .WithTopic(Topic)
                     .WithPayload(Message).WithRetainFlag(_optionsMonitor.Retained);
