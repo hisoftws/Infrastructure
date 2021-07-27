@@ -6,13 +6,20 @@ using System.Threading;
 using System.Collections.Generic;
 using General.StringBuildPool;
 using System.Threading.Tasks;
+using General.Log.Log4net;
 
 namespace Test
 {
     class Program
     {
+        private static readonly log4net.ILog Logger = LogFactory.CreateLogger();
+
         static void Main(string[] args)
         {
+            Logger.Debug("debug");
+            Logger.Error("error");
+            Logger.Warn("warn");
+            Logger.Info("info");
 
             var options = new MqttOptions
             {
