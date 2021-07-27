@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using MQTTnet.Client.Options;  //具体连接时需要用到的属性,ID的名称,要连接Server的名称,接入时用到的账号和密码,掉线时是否重新清除原有名称
 
 namespace Infrastructure.Mqtt.MqttNet
 {
