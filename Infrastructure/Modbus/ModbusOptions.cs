@@ -62,7 +62,7 @@ namespace Infrastructure.Modbus
         public int WriteTimeout { set; get; } = 100;
 
         /// <summary>
-        /// 重试时间
+        /// 重试次数
         /// </summary>
         public int Retries { get; set; } = 3;
 

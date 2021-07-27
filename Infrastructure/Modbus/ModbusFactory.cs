@@ -165,13 +165,13 @@ namespace Infrastructure.Modbus
                 if (_serialPort.IsOpen)
                 {
                     if (_logger != null)
-                        _logger.LogInformation("Modbus Device 连接成功!");
+                        _logger.LogInformation("Modbus Rtu Device 连接成功!");
                     return true;
                 }
                 else
                 {
                     if (_logger != null)
-                        _logger.LogInformation("Modbus Device 连接失败!");
+                        _logger.LogInformation("Modbus Rtu Device 连接失败!");
                     return false;
                 }
             }
@@ -238,7 +238,7 @@ namespace Infrastructure.Modbus
         /// </summary>
         /// <param name="slaveID">从机id</param> 
         /// <param name="startAddress">读取起始位</param>
-        /// <param name="numberOfPoints">读武器位数</param>
+        /// <param name="numberOfPoints">读取位数</param>
         public bool[] ReadCoils(byte slaveID, ushort startAddress, ushort numberOfPoints)
         {
             try
@@ -286,6 +286,25 @@ namespace Infrastructure.Modbus
             catch (Exception ex)
             {
                 throw new Exception("WriteSingleCoil:" + ex.StackTrace);
+            }
+        }
+        
+        /// <summary>
+        /// 写多个线圈
+        /// </summary>
+        /// <param name="slaveID"></param>
+        /// <param name="startAddress"></param>
+        /// <param name="values"></param>
+        public void WriteMultipleCoils(byte slaveID, ushort startAddress, bool[] values)
+        {
+            try
+            {
+                master.WriteMultipleCoils(slaveID, startAddress, values);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("WriteMultipleCoils:" + ex.StackTrace);
             }
         }
     }

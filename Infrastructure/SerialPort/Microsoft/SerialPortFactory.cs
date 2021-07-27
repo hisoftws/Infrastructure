@@ -74,7 +74,11 @@ namespace Infrastructure.SerialPort.Microsoft
         {
             try
             {
-                _port = new System.IO.Ports.SerialPort(_optionsMonitor.PortName, _optionsMonitor.BaudRate, (Parity)_optionsMonitor.Parity, _optionsMonitor.DataBits, StopBits.One);
+                _port = new System.IO.Ports.SerialPort(_optionsMonitor.PortName, 
+                    _optionsMonitor.BaudRate, 
+                    (Parity)_optionsMonitor.Parity,
+                    _optionsMonitor.DataBits,
+                    StopBits.One);
                 _port.DataReceived += _port_DataReceived;
                 if (!_port.IsOpen)
                     _port.Open();
