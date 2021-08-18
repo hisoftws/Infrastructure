@@ -24,7 +24,6 @@
     <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
     <PackageReference Include="DotNetty.Transport" Version="0.6.0" />
     <PackageReference Include="flyfire.CustomSerialPort" Version="1.0.1" />
-    <PackageReference Include="HslCommunication" Version="9.6.2" />
     <PackageReference Include="M2MqttClientDotnetCore" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
@@ -40,5 +39,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".DS_Store" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HslCommunication">
+      <HintPath>HslCommunication.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

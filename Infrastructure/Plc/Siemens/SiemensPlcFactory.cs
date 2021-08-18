@@ -14,7 +14,7 @@ namespace Infrastructure.Plc.Siemens
         private SiemensPlcFactory _siemenns;
         private SiemensS7Net S7PLC = null;
         private bool PLCstatus = false;
-        private readonly SiemensPlcOptions _optionsMonitor;
+        private SiemensPlcOptions _optionsMonitor;
         private static object _obj = new object();
 
         public SiemensPlcFactory(ILogger<SiemensPlcFactory> logger, IOptionsMonitor<SiemensPlcOptions> optionsMonitor)
@@ -31,13 +31,15 @@ namespace Infrastructure.Plc.Siemens
             {
                 try
                 {
-                    Register();
                     lock (_obj)
                     {
-                        if (_siemenns == null)
+                        if (Register())
                         {
+                            if (_siemenns == null)
+                            {
 
-
+                                Init();
+                            }
                         }
                     }
                 }
@@ -47,6 +49,39 @@ namespace Infrastructure.Plc.Siemens
                 }
             }
         }
+
+        public SiemensPlcFactory(SiemensPlcOptions optionsMonitor)
+        {
+            if (optionsMonitor == null)
+            {
+                throw new ArgumentNullException(nameof(optionsMonitor));
+            }
+
+            _optionsMonitor = optionsMonitor;
+
+            if (_siemenns == null)
+            {
+                try
+                {
+                    lock (_obj)
+                    {
+                        if (Register())
+                        {
+                            if (_siemenns == null)
+                            {
+
+                                Init();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
 
         public bool Init()
         {
@@ -143,13 +178,13 @@ namespace Infrastructure.Plc.Siemens
         /// <param name="val"></param>
         /// <param name="enumDataType">datatype</param>
         /// <returns></returns>
-        public OperateResult Plc_Writer(string area, string address, string val, EnumDataType enumDataType)
+        public bool Plc_Writer(string area, string address, object val, EnumDataType enumDataType)
         {
             if (string.IsNullOrWhiteSpace(area))
                 throw new ArgumentException("area is empty.");
             if (string.IsNullOrWhiteSpace(address))
                 throw new ArgumentException("address is empty.");
-            if (string.IsNullOrWhiteSpace(val))
+            if (val == null)
                 throw new ArgumentNullException("val is empty.");
 
             var result = new OperateResult();
@@ -160,13 +195,10 @@ namespace Infrastructure.Plc.Siemens
                 switch (enumDataType)
                 {
                     case EnumDataType.Byte:
-                        result = S7PLC.Write(area + address, byte.Parse(val));
-                        break;
-                    case EnumDataType.Short:
-                        result = S7PLC.Write(area + address, short.Parse(val));
+                        result = S7PLC.Write(area + address, byte.Parse(val.ToString()));
                         break;
                     case EnumDataType.Int:
-                        result = S7PLC.Write(area + address, int.Parse(val));
+                        result = S7PLC.Write(area + address, int.Parse(val.ToString()));
                         break;
                 }
             }
@@ -174,7 +206,7 @@ namespace Infrastructure.Plc.Siemens
             {
                 throw ex;
             }
-            return result;
+            return result.IsSuccess;
         }
 
         /// <summary>
@@ -185,7 +217,7 @@ namespace Infrastructure.Plc.Siemens
         /// <param name="address"></param>
         /// <param name="enumDataType"></param>
         /// <returns></returns>
-        public OperateResult<T> Plc_Read<T>(string area, string address, EnumDataType enumDataType)
+        public T Plc_Read<T>(string area, string address, EnumDataType enumDataType)
         {
             if (string.IsNullOrWhiteSpace(area))
                 throw new ArgumentException("area is empty.");
@@ -199,17 +231,16 @@ namespace Infrastructure.Plc.Siemens
                 switch (enumDataType)
                 {
                     case EnumDataType.Byte:
-                        return (OperateResult<T>)(object)S7PLC.ReadByte(area + address);
+                        return ((OperateResult<T>)(object)S7PLC.ReadByte(area + address)).Content;
 
                     case EnumDataType.Short:
-                        return (OperateResult<T>)(object)S7PLC.ReadInt16(area + address);
+                        return ((OperateResult<T>)(object)S7PLC.ReadInt16(area + address)).Content;
 
                     case EnumDataType.Int:
-                        return (OperateResult<T>)(object)S7PLC.ReadInt32(area + address);
+                        return ((OperateResult<T>)(object)S7PLC.ReadInt32(area + address)).Content;
 
                     default:
                         throw new ArgumentException("enumDataType not support data type");
-                        break;
 
                 }
             }
@@ -218,7 +249,7 @@ namespace Infrastructure.Plc.Siemens
                 throw ex;
             }
 
-            return null;
+            return default;
         }
 
         public enum EnumDataType
