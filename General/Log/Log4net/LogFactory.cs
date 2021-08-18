@@ -56,7 +56,7 @@ namespace General.Log.Log4net
                 sb.Append(@"<param name=""maxSizeRollBackups"" value=""100""/>");
                 sb.Append(@"<param name=""StaticLogFileName"" value=""false""/>");
                 sb.Append(@"<layout type=""log4net.Layout.PatternLayout,log4net"">");
-                sb.Append(@"<param name=""ConversionPattern"" value=""%n＝＝＝＝＝＝＝＝＝＝%n[Level]%-5level%n[Data]%date%n[Thread][%thread]%n[Run time][%r]ms%n[Line]%l%n[Message]%message""/>");
+                sb.Append(@"<param name=""ConversionPattern"" value=""＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝%n[Level]%-5level%n[Data]%date%n[Thread][%thread]%n[Run time][%r]ms%n[Line]%l%n[Message]%message""/>");
                 sb.Append(@"<param name=""Header"" value=""&#xD;&#xA;----------------------启动--------------------------&#xD;&#xA;""/>");
                 sb.Append(@"<param name=""Footer"" value=""&#xD;&#xA;----------------------结束--------------------------&#xD;&#xA;""/>");
                 sb.Append(@"</layout>");
