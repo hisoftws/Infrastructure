@@ -55,9 +55,7 @@ namespace Infrastructure.Modbus
         {
             _logger = logger;
             if (optionsMonitor == null)
-            {
                 throw new ArgumentNullException(nameof(optionsMonitor));
-            }
 
             _optionsMonitor = optionsMonitor.CurrentValue;
 
@@ -288,7 +286,7 @@ namespace Infrastructure.Modbus
                 throw new Exception("WriteSingleCoil:" + ex.StackTrace);
             }
         }
-        
+
         /// <summary>
         /// 写多个线圈
         /// </summary>

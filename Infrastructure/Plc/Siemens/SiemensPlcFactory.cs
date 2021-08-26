@@ -27,7 +27,7 @@ namespace Infrastructure.Plc.Siemens
             _optionsMonitor = optionsMonitor.CurrentValue;
             _logger = logger;
 
-            if(_siemenns == null)
+            if (_siemenns == null)
             {
                 try
                 {
@@ -170,7 +170,7 @@ namespace Infrastructure.Plc.Siemens
                 return true;
         }
 
-       
+
         /// Write plc by data type
         /// </summary>
         /// <param name="area"></param>
@@ -178,14 +178,16 @@ namespace Infrastructure.Plc.Siemens
         /// <param name="val"></param>
         /// <param name="enumDataType">datatype</param>
         /// <returns></returns>
-        public OperateResult Plc_Writer(string area, string address, string val, EnumDataType enumDataType)
+        public OperateResult Plc_Writer(string area, string address, object val, EnumDataType enumDataType)
         {
             if (string.IsNullOrWhiteSpace(area))
                 throw new ArgumentException("area is empty.");
             if (string.IsNullOrWhiteSpace(address))
                 throw new ArgumentException("address is empty.");
-            if (string.IsNullOrWhiteSpace(val))
-                throw new ArgumentNullException("val is empty.");
+            if (val == null)
+                throw new ArgumentNullException("val is null.");
+
+            var tmpval = val.ToString().ToLower().StartsWith("0x") ? val.ToString().Remove(0, 2) : val.ToString();
 
             var result = new OperateResult();
             try
@@ -195,13 +197,13 @@ namespace Infrastructure.Plc.Siemens
                 switch (enumDataType)
                 {
                     case EnumDataType.Byte:
-                        result = S7PLC.Write(area + address, byte.Parse(val));
+                        result = S7PLC.Write(area + address, byte.Parse(tmpval));
                         break;
                     case EnumDataType.Short:
-                        result = S7PLC.Write(area + address, short.Parse(val));
+                        result = S7PLC.Write(area + address, short.Parse(tmpval));
                         break;
                     case EnumDataType.Int:
-                        result = S7PLC.Write(area + address, int.Parse(val));
+                        result = S7PLC.Write(area + address, int.Parse(tmpval));
                         break;
                 }
             }
