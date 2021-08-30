@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DotNettySocket\Tcp\Server\" />
+    <Folder Include="DotNettySocket\Tcp\Client\" />
+    <Folder Include="DotNettySocket\WebScoket\Server\" />
+    <Folder Include="DotNettySocket\WebScoket\Client\" />
     <Folder Include="Mq\" />
     <Folder Include="Gpio\" />
     <Folder Include="Arduino\" />
@@ -23,6 +27,7 @@
     <PackageReference Include="DotNetty.Common" Version="0.6.0" />
     <PackageReference Include="DotNetty.Handlers" Version="0.6.0" />
     <PackageReference Include="DotNetty.Transport" Version="0.6.0" />
+    <PackageReference Include="DotNettySocket" Version="1.2.0" />
     <PackageReference Include="flyfire.CustomSerialPort" Version="1.0.1" />
     <PackageReference Include="M2MqttClientDotnetCore" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
