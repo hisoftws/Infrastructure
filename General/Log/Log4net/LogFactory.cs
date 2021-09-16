@@ -39,9 +39,7 @@ namespace General.Log.Log4net
             string path = Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "log4netConfig.xml" });
             XmlDocument doc = new XmlDocument();
             if (System.IO.File.Exists(path))
-            {
                 doc.Load(path);
-            }
             else
             {
                 StringBuilder sb = new StringBuilder();
