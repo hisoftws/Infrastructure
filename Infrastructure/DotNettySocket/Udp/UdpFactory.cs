@@ -33,14 +33,14 @@ namespace Infrastructure.DotNettySocket.Udp
                     if (_udpSocketServer == null)
                     {
                         if (_optionMonitor.ListenerUdpPort != 0)
-                            InitServer();
+                            InitServer().GetAwaiter();
                     }
 
                     if (_udpSocketClient == null)
                     {
                         if (!string.IsNullOrWhiteSpace(_optionMonitor.TargetUdpIp) && _optionMonitor.TargetUdpPort != 0)
                         {
-                            InitClient();
+                            InitClient().GetAwaiter();
                         }
                     }
                 }

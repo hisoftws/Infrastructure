@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DotNettySocket\Tcp\Server\" />
-    <Folder Include="DotNettySocket\Tcp\Client\" />
     <Folder Include="DotNettySocket\WebScoket\Server\" />
     <Folder Include="DotNettySocket\WebScoket\Client\" />
     <Folder Include="Mq\" />
