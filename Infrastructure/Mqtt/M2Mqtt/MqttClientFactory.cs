@@ -11,9 +11,15 @@ using System.Threading;
 
 namespace Infrastructure.Mqtt.M2Mqtt
 {
-    /// <summary>
-    /// CoApServer
-    /// </summary>
+
+    #region 创建描述
+    /***
+    *    功能描述: Mqtt协议
+    *    作    者: 王帅
+    *    创建时间: 2021/9/24
+    ***/
+    #endregion
+
     public class MqttClientFactory
     {
         private readonly MqttOptions _optionsMonitor;
