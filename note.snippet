@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>创建代码注释</Title>
+            <Shortcut>cm</Shortcut>
+            <Description>创建注释的代码片段</Description>
+            <Author>King</Author>
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Declarations>
+                <Literal>
+                    <ID>Description</ID>
+                    <ToolTip>功能</ToolTip>
+                     <Default>描述</Default>
+                </Literal>
+                <Literal>
+                    <ID>Author</ID>
+                    <ToolTip>作者</ToolTip>
+                    <Default>King</Default>
+                </Literal>
+                <Literal>
+                    <ID>CreateTime</ID>
+                    <ToolTip>创建日期</ToolTip>
+                     <Default>@@Today</Default>
+                </Literal>
+            
+            </Declarations>
+            <Code Language="csharp"><![CDATA[
+            #region 创建描述
+            /***
+            *    功能描述: $Description$
+            *    作    者: $Author$
+            *    创建时间: $CreateTime$
+            ***/
+            #endregion
+            $end$
+            ]]>
+            </Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
