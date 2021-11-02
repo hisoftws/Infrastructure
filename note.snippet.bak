@@ -20,7 +20,7 @@
                 <Literal>
                     <ID>Author</ID>
                     <ToolTip>作者</ToolTip>
-                    <Default>王帅</Default>
+                    <Default>King</Default>
                 </Literal>
                 <Literal>
                     <ID>CreateTime</ID>

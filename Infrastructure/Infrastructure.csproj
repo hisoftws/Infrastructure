@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DotNettySocket\WebScoket\Server\" />
-    <Folder Include="DotNettySocket\WebScoket\Client\" />
+    <Folder Include="DotNettySocket\WebSocket\Client\" />
     <Folder Include="Mq\" />
     <Folder Include="Gpio\" />
     <Folder Include="Arduino\" />
