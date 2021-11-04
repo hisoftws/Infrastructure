@@ -21,6 +21,7 @@ namespace Infrastructure.Mqtt.MqttNet
         private ILogger<MqttClientFactory> _logger;
         private MqttClient _mqttClient;
         private static IMqttClientOptions options = null;
+        public static event Action<string> OnRevice;
 
 
         public MqttClientFactory(MqttOptions optionsMonitor)
@@ -145,6 +146,9 @@ namespace Infrastructure.Mqtt.MqttNet
                 string Retained = e.ApplicationMessage.Retain.ToString();
                 Debug.WriteLine("MessageReceived >>Topic:" + Topic + "; QoS: " + QoS + "; Retained: " + Retained + ";");
                 Debug.WriteLine("MessageReceived >>Msg: " + text);
+
+                if (OnRevice != null)
+                    OnRevice(text);
             }
             catch (Exception exp)
             {
@@ -179,7 +183,8 @@ namespace Infrastructure.Mqtt.MqttNet
                 Debug.WriteLine("Publish >>Message: " + Message);
                 MqttApplicationMessageBuilder mamb = new MqttApplicationMessageBuilder()
                     .WithTopic(Topic)
-                    .WithPayload(Message).WithRetainFlag(_optionsMonitor.Retained);
+                    .WithPayload(Message)
+                    .WithRetainFlag(_optionsMonitor.Retained);
                 if (_optionsMonitor.QualityOfServiceLevel == 0)
                 {
                     mamb = mamb.WithAtMostOnceQoS();
