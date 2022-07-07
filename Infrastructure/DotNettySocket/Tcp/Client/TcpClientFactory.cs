@@ -36,40 +36,75 @@ namespace Infrastructure.DotNettySocket.Tcp.Client
             }
         }
 
+        public TcpClientFactory(TcpClientOptions optionsMonitor)
+        {
+            if (optionsMonitor == null)
+                throw new ArgumentNullException(nameof(optionsMonitor));
+
+            _optionMonitor = optionsMonitor;
+
+            if (_tcpSocketClient == null)
+            {
+                lock (_obj)
+                {
+                    if (_tcpSocketClient == null)
+                    {
+                        InitTcpClient().GetAwaiter();
+                    }
+                }
+            }
+        }
+
         private async Task InitTcpClient()
         {
             _tcpSocketClient = await SocketBuilderFactory.GetTcpSocketClientBuilder(_optionMonitor.TcpClientIp, _optionMonitor.TcpClientPort)
-               .SetLengthFieldEncoder(2)
-               .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
+               //.SetLengthFieldEncoder(2)
+               //.SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
                .OnClientStarted(client =>
                {
-                   _logger.LogInformation($"客户端启动");
+                   if (_logger != null)
+                       _logger.LogInformation($"客户端启动");
+                   else
+                       System.Diagnostics.Debug.WriteLine($"客户端启动");
                })
                .OnClientClose(client =>
                {
-                   _logger.LogInformation($"客户端关闭");
+                   if (_logger != null)
+                       _logger.LogInformation($"客户端关闭");
+                   else
+                       System.Diagnostics.Debug.WriteLine($"客户端关闭");
                })
                .OnException(ex =>
                {
-                   _logger.LogInformation($"异常:{ex.Message}");
+                   if (_logger != null)
+                       _logger.LogInformation($"异常:{ex.Message}");
+                   else
+                       System.Diagnostics.Debug.WriteLine($"异常:{ex.Message}");
                })
                .OnRecieve((client, bytes) =>
                {
-                   _logger.LogInformation($"客户端:收到数据:{Encoding.UTF8.GetString(bytes)}");
+                   if (_logger != null)
+                       _logger.LogInformation($"客户端:收到数据:{Encoding.UTF8.GetString(bytes)}");
+                   else
+                       System.Diagnostics.Debug.WriteLine($"客户端:收到数据:{Encoding.UTF8.GetString(bytes)}");
+
                    if (OnRecvice != null)
                        OnRecvice(bytes, client);
                })
                .OnSend((client, bytes) =>
                {
-                   _logger.LogInformation($"客户端:发送数据:{Encoding.UTF8.GetString(bytes)}");
+                   if (_logger != null)
+                       _logger.LogInformation($"客户端:发送数据:{Encoding.UTF8.GetString(bytes)}");
+                   else
+                       System.Diagnostics.Debug.WriteLine($"客户端:发送数据:{Encoding.UTF8.GetString(bytes)}");
                })
                .BuildAsync();
         }
 
-        public async Task TcpClientSend(ITcpSocketClient client, byte[] bytes)
+        public async Task TcpClientSend(byte[] bytes)
         {
-            if (client != null)
-                await client.Send(bytes);
+            if (_tcpSocketClient != null)
+                await _tcpSocketClient.Send(bytes);
         }
 
         public void TcpClientClose()

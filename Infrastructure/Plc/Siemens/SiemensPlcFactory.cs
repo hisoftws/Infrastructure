@@ -170,7 +170,7 @@ namespace Infrastructure.Plc.Siemens
                 return true;
         }
 
-
+        /// <summary>
         /// Write plc by data type
         /// </summary>
         /// <param name="area"></param>

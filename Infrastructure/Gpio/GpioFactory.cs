@@ -82,7 +82,6 @@ namespace Infrastructure.Gpio
                 if (_gpio == null)
                     throw new NullReferenceException("Gpio connect is fail.");
 
-
                 if (_gpio.IsPinModeSupported(pinNum, (PinMode)iomodel))
                 {
                     if (_gpio.IsPinOpen(pinNum))

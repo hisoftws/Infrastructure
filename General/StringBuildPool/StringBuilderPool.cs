@@ -77,13 +77,9 @@ namespace General.StringBuildPool
             stringBuilder.Length = 0;
 
             if (poolIndex == -1)
-            {
                 _fastPool = stringBuilder;
-            }
             else
-            {
                 _slowPool[poolIndex] = stringBuilder;
-            }
         }
 
         /// <summary>
